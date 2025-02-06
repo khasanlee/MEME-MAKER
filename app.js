@@ -6,6 +6,7 @@ const colorOptions = Array.from(document.getElementsByClassName("color-option"))
 const modeBtn = document.getElementById("mode-btn")
 const destroyBtn = document.getElementById("destroy-btn")
 const eraseBtn = document.getElementById("eraser-btn")
+const fileInput = document.getElementById("file")
 canvas.width = 800;
 canvas.height = 800;
 
@@ -71,6 +72,20 @@ function onEraseClick(event) {
     isFilling = false
     modeBtn.innerText = "Fill"
 }
+function onFileChange(event) {
+    const file = event.target.files[0]
+    const url = URL.createObjectURL(file)
+    const image = new Image()   // same with <img src=""/>
+    image.src=url
+    image.onload = function() {
+        ctx.drawImage(image, 0, 0,CANVAS_WIDTH, CANVAS_HEIGHT)
+        fileInput.value = null
+    }
+
+}
+
+//canvas.onmousemove = function //is same with .addEventListener("mousemove")
+
 canvas.addEventListener("mousemove", onMove)
 canvas.addEventListener("mousedown", onMouseDown)
 canvas.addEventListener("mouseup", onMouseUp)
@@ -84,3 +99,4 @@ colorOptions.forEach(color => color.addEventListener("click", onColorClick))
 modeBtn.addEventListener("click", onModeClick)
 destroyBtn.addEventListener("click", onDestroyClick)
 eraseBtn.addEventListener("click", onEraseClick)
+fileInput.addEventListener("change", onFileChange)
